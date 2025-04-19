@@ -7,7 +7,7 @@ export const intervalUnit = {
   yearly: 1,
 } as const;
 
-export const intervalUnitName: { [key in IntervalUnit]: string } = {
+export const intervalUnitNames: { [key in IntervalUnit]: string } = {
   [intervalUnit.monthly]: "月額",
   [intervalUnit.yearly]: "年額",
 } as const;

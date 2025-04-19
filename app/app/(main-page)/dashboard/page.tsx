@@ -23,7 +23,7 @@ export default function DashboardPage() {
                 一覧表示
               </Button>
             </Link>
-            <Link href="/add-subscription">
+            <Link href="/app/add-subscription">
               <Button>
                 <Plus className="mr-2 h-4 w-4" />
                 サブスクを追加

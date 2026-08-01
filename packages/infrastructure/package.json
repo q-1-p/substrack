@@ -4,8 +4,7 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "@clerk/clerk-sdk-node": "^5.1.6",
-    "@clerk/nextjs": "^6.37.3",
+    "@clerk/nextjs": "^6.39.6",
     "@neondatabase/serverless": "^1.0.2"
   }
 }

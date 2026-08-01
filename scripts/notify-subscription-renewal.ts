@@ -12,9 +12,6 @@ export const sendMail = async () => {
       user: process.env.MAIL_USERNAME,
       pass: process.env.MAIL_PASSWORD,
     },
-    tls: {
-      rejectUnauthorized: false,
-    },
   });
 
   const nextDate = formatDate(addDays(new Date(), 1), "yyyy-MM-dd");

@@ -3,7 +3,6 @@ import Image from "next/image";
 
 import LoginDialog from "@/components/case/login-dialog";
 import BellIcon from "@/components/common/bell-icon";
-import CancelIcon from "@/components/common/cancel-icon";
 import ClockIcon from "@/components/common/clock-icon";
 import FunctionCard from "@/components/common/function-card";
 import { SiteHeader } from "@/components/domain/site/site-header";
@@ -34,7 +33,7 @@ export default function Home() {
                     サブスクを賢く管理
                   </h1>
                   <p className="max-w-[600px] text-gray-500 md:text-xl dark:text-gray-400">
-                    サブスクの一覧を円換算で管理し、更新日前にメール通知。解約方法もまとめて確認できます。
+                    サブスクの一覧を円換算で管理し、更新日前にメール通知。
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
@@ -70,7 +69,7 @@ export default function Home() {
                 </p>
               </div>
             </div>
-            <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 py-12 md:grid-cols-3">
+            <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 py-12 md:grid-cols-2">
               <FunctionCard
                 title="円換算での管理"
                 description="ドルやユーロなど、様々な通貨のサブスクを円換算で一元管理できます。"
@@ -80,11 +79,6 @@ export default function Home() {
                 title="更新日の通知"
                 description="サブスクの更新日が近づくとメールでお知らせします。不要なサブスクを解約する機会を逃しません。"
                 icon={<BellIcon />}
-              />
-              <FunctionCard
-                title="解約方法の表示"
-                description="各サービスの解約方法もまとめて表示。面倒な調査は必要ありません。"
-                icon={<CancelIcon />}
               />
             </div>
           </div>

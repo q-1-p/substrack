@@ -1,6 +1,5 @@
 import type { Result } from "../../../functional/src/result";
 import type {
-  CancellationMethodId,
   Subscription,
   SubscriptionDetail,
   SubscriptionId,
@@ -39,12 +38,6 @@ export interface ISubscriptionRepository {
   update: (
     userId: UserId,
     subscriptionUpdated: Subscription,
-  ) => Promise<boolean>;
-
-  linkCancellationMethod: (
-    userId: UserId,
-    subscriptionId: SubscriptionId,
-    cancellationMethodId: CancellationMethodId,
   ) => Promise<boolean>;
 
   delete: (userId: UserId, subscriptionId: SubscriptionId) => Promise<boolean>;

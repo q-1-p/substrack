@@ -1,18 +1,11 @@
 import { clerkClient } from "@clerk/nextjs/server";
-import { eq, inArray, sql } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 
 import { db, dbSocket } from "..";
 
 import { type UserId, validateUserId } from "@/domain/type";
 import { err, ok, type Result } from "@/functional/result";
-import {
-  cancellationMethodBookmarksTable,
-  cancellationMethodGoodsTable,
-  cancellationMethodsTable,
-  cancellationStepsTable,
-  subscriptionsTable,
-  usersTable,
-} from "@/infrastructure/schema";
+import { subscriptionsTable, usersTable } from "@/infrastructure/schema";
 
 import type { IUserRepository } from "@/domain/user/user-repository";
 
@@ -70,34 +63,9 @@ export class UserRepository implements IUserRepository {
   ): Promise<boolean> => {
     return dbSocket
       .transaction(async (tx) => {
-        const cancellationMethods = await tx
-          .select({
-            cancellationMethodId: cancellationMethodsTable.id,
-          })
-          .from(cancellationMethodsTable)
-          .where(eq(cancellationMethodsTable.createdUserId, userId));
-
-        await Promise.all([
-          tx
-            .delete(cancellationMethodBookmarksTable)
-            .where(eq(cancellationMethodBookmarksTable.userId, userId)),
-          tx
-            .delete(cancellationMethodGoodsTable)
-            .where(eq(cancellationMethodGoodsTable.userId, userId)),
-          tx.delete(cancellationStepsTable).where(
-            inArray(
-              cancellationStepsTable.cancellationMethodId,
-              cancellationMethods.map((cm) => cm.cancellationMethodId),
-            ),
-          ),
-          tx
-            .delete(subscriptionsTable)
-            .where(eq(subscriptionsTable.userId, userId)),
-        ]);
-
         await tx
-          .delete(cancellationMethodsTable)
-          .where(eq(cancellationMethodsTable.createdUserId, userId));
+          .delete(subscriptionsTable)
+          .where(eq(subscriptionsTable.userId, userId));
         await tx.delete(usersTable).where(eq(usersTable.id, userId));
 
         await (await clerkClient()).users.deleteUser(clerkUserId);

@@ -5,11 +5,7 @@ import { getDaysInMonth, getDaysInYear } from "date-fns";
 import { describe, expect, test } from "bun:test";
 import { currencyId, timeUnit } from "@/domain/type";
 
-import type {
-  CancellationMethodId,
-  SubscriptionDetail,
-  UpdateCycle,
-} from "@/domain/type";
+import type { SubscriptionDetail, UpdateCycle } from "@/domain/type";
 
 describe("SubscriptionBillingInformationCardPresentation", () => {
   test("日次サブスクコスト計算", () => {
@@ -22,7 +18,6 @@ describe("SubscriptionBillingInformationCardPresentation", () => {
       currencyId: currencyId.usd,
       updateCycle: { number: 2, unit: timeUnit.day } as UpdateCycle,
       nextUpdate: new Date("2023-12-01"),
-      linkCancellationMethodId: "1" as CancellationMethodId,
     };
 
     render(
@@ -47,7 +42,6 @@ describe("SubscriptionBillingInformationCardPresentation", () => {
       currencyId: currencyId.usd,
       updateCycle: { number: 2, unit: timeUnit.month } as UpdateCycle,
       nextUpdate: new Date("2023-12-01"),
-      linkCancellationMethodId: "1" as CancellationMethodId,
     };
 
     render(
@@ -71,7 +65,6 @@ describe("SubscriptionBillingInformationCardPresentation", () => {
       currencyId: currencyId.usd,
       updateCycle: { number: 2, unit: timeUnit.year } as UpdateCycle,
       nextUpdate: new Date("2023-12-01"),
-      linkCancellationMethodId: "1" as CancellationMethodId,
     };
 
     render(

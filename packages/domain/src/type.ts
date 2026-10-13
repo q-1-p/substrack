@@ -9,13 +9,8 @@ const mailAddressBrand = Symbol();
 const subscriptionIdBrand = Symbol();
 const subscriptionNameBrand = Symbol();
 const updateCycleBrand = Symbol();
-const cancellationMethodIdBrand = Symbol();
-const cancellationMethodUrlBrand = Symbol();
-const cancellationMethodPrecautionsBrand = Symbol();
-const cancellationMethodFreeTextBrand = Symbol();
 
 const subscriptionBrand = Symbol();
-const cancellationMethodBrand = Symbol();
 //#endregion
 
 export const userIdSchema = type("string.uuid");
@@ -29,23 +24,7 @@ export const updateCycleSchema = type({
   number: "number > 0",
   unit: "2 | 0 | 1", // バリデーション時に再起エラーになるので直接定義
 });
-export const cancellationMethodIdSchema = type("string.uuid");
-export const cancellationMethodUrlSchema = type("string.url");
-export const cancellationMethodStepsSchema = type("string[] > 0");
-export const cancellationMethodPrecautionsSchema = type("string");
-export const cancellationMethodFreeTextSchema = type("string");
 
-export const cancellationMethodSchema = type({
-  id: cancellationMethodIdSchema,
-  name: subscriptionNameSchema,
-  isPrivate: "boolean",
-  urlToCancel: "string.url | '' | null | undefined",
-  steps: "string[]",
-  precautions: cancellationMethodPrecautionsSchema,
-  freeText: cancellationMethodFreeTextSchema,
-  updatedAt: "Date",
-  linkSubscriptionId: "string.uuid | null | undefined",
-});
 export const subscriptionSchema = type({
   id: subscriptionIdSchema,
   name: subscriptionNameSchema,
@@ -96,23 +75,6 @@ export type SubscriptionDetail = {
   currencyId: CurrencyId;
   nextUpdate: Date;
   updateCycle: UpdateCycle;
-  linkCancellationMethodId: CancellationMethodId;
-};
-
-export type CancellationMethodDetail = {
-  id: string;
-  subscriptionName: string;
-  mine: boolean;
-  isPrivate: boolean;
-  urlToCancel: string | null | undefined;
-  steps: string[];
-  precautions: string;
-  freeText: string;
-  isBookmarked: boolean;
-  evaluatedGood: boolean;
-  bookmarkCount: number;
-  goodCount: number;
-  updatedAt: Date;
 };
 
 export type UserId = typeof userIdSchema.infer & {
@@ -132,26 +94,8 @@ export type SubscriptionName = typeof subscriptionNameSchema.infer & {
 export type UpdateCycle = { number: number; unit: TimeUnit } & {
   [updateCycleBrand]: unknown;
 };
-export type CancellationMethodId = typeof cancellationMethodIdSchema.infer & {
-  [cancellationMethodIdBrand]: unknown;
-};
-export type CancellationMethodUrl = typeof cancellationMethodUrlSchema.infer & {
-  [cancellationMethodUrlBrand]: unknown;
-};
-export type CancellationMethodPrecautions =
-  typeof cancellationMethodPrecautionsSchema.infer & {
-    [cancellationMethodPrecautionsBrand]: unknown;
-  };
-export type CancellationMethodFreeText =
-  typeof cancellationMethodFreeTextSchema.infer & {
-    [cancellationMethodFreeTextBrand]: unknown;
-  };
-
 export type Subscription = typeof subscriptionSchema.infer & {
   [subscriptionBrand]: unknown;
-};
-export type CancellationMethod = typeof cancellationMethodSchema.infer & {
-  [cancellationMethodBrand]: unknown;
 };
 
 export function validateUserId(value: unknown): Result<UserId, string> {
@@ -183,16 +127,6 @@ export function validateSubscriptionName(
   }
   return { type: ok, value: validated as SubscriptionName };
 }
-export function validateCancellationMethodId(
-  value: unknown,
-): Result<CancellationMethodId, string> {
-  const validated = cancellationMethodIdSchema(value);
-  if (validated instanceof type.errors) {
-    console.error(validated.summary);
-    return { type: err, error: validated.summary };
-  }
-  return { type: ok, value: validated as CancellationMethodId };
-}
 
 export function validateSubscription(d: {
   id: string;
@@ -212,16 +146,6 @@ export function validateSubscription(d: {
     return { type: err, error: validated.summary };
   }
   return { type: ok, value: validated as Subscription };
-}
-export function validateCancellationMethod(
-  d: typeof cancellationMethodSchema.infer,
-): Result<CancellationMethod, string> {
-  const validated = cancellationMethodSchema(d);
-  if (validated instanceof type.errors) {
-    console.error(validated.summary);
-    return { type: err, error: validated.summary };
-  }
-  return { type: ok, value: validated as CancellationMethod };
 }
 
 export function timeUnitName(value: TimeUnit): "日" | "月" | "年" {

@@ -1,4 +1,4 @@
-import { FileText, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import Link from "next/link";
 
 import { SiteHeader } from "@/components/domain/site/site-header";
@@ -31,12 +31,6 @@ export default function DashboardPage() {
           <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
             <h1 className="font-bold text-2xl">ダッシュボード</h1>
             <div className="flex gap-2">
-              <Link href="/cancellation-guide">
-                <Button variant="outline">
-                  <FileText className="mr-2 h-4 w-4" />
-                  解約ガイド
-                </Button>
-              </Link>
               <Link href="/app/subscription/add">
                 <Button>
                   <Plus className="mr-2 h-4 w-4" />

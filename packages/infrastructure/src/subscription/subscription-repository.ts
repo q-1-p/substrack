@@ -12,7 +12,6 @@ import { db } from "..";
 import { CurrencyRepository } from "../currency/currency-repository";
 
 import {
-  type CancellationMethodId,
   type CurrencyId,
   type Subscription,
   type SubscriptionDetail,
@@ -110,7 +109,6 @@ export class SubscriptionRepository implements ISubscriptionRepository {
               number: data.updateCycleNumber,
               unit: data.updateCycleUnit,
             },
-            linkCancellationMethodId: data.linkedCancellationMethodId,
           } as SubscriptionDetail,
         };
       })
@@ -367,29 +365,6 @@ export class SubscriptionRepository implements ISubscriptionRepository {
         and(
           eq(subscriptionsTable.userId, userId),
           eq(subscriptionsTable.id, subscription.id),
-        ),
-      )
-      .then(() => true)
-      .catch((error) => {
-        console.error(error);
-        return false;
-      });
-  };
-
-  public linkCancellationMethod = (
-    userId: UserId,
-    subscriptionId: SubscriptionId,
-    cancellationMethodId: CancellationMethodId,
-  ) => {
-    return db
-      .update(subscriptionsTable)
-      .set({
-        linkedCancellationMethodId: cancellationMethodId,
-      })
-      .where(
-        and(
-          eq(subscriptionsTable.userId, userId),
-          eq(subscriptionsTable.id, subscriptionId),
         ),
       )
       .then(() => true)

@@ -1,13 +1,11 @@
 import { Pencil } from "lucide-react";
 import Link from "next/link";
 
-import { CancellationMethodDetailCardContainer } from "../cancellation-method/cancellation-method-detail-card.container";
 import { fetchSubscription } from "./_lib/fetcher";
 import SubscriptionDeleteIcon from "./subscription-delete-icon";
 
 import SubscriptionBillingInformationCardPresentation from "@/components/domain/subscription/subscription-billing-information-card.presentation";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default async function SubscriptionInformationPanel({
   subscriptionId,
@@ -43,32 +41,9 @@ export default async function SubscriptionInformationPanel({
             </div>
           </div>
 
-          <Tabs defaultValue="billing">
-            <TabsList className="grid w-full grid-cols-2 rounded-xl bg-secondary/50 p-1">
-              <TabsTrigger
-                value="billing"
-                className="rounded-lg data-[state=active]:bg-white"
-              >
-                請求情報
-              </TabsTrigger>
-              <TabsTrigger
-                value="cancel"
-                className="rounded-lg data-[state=active]:bg-white"
-              >
-                解約方法
-              </TabsTrigger>
-            </TabsList>
-            <TabsContent value="billing">
-              <SubscriptionBillingInformationCardPresentation
-                subscription={subscription}
-              />
-            </TabsContent>
-            <TabsContent value="cancel">
-              <CancellationMethodDetailCardContainer
-                cancellationMethodId={subscription.linkCancellationMethodId}
-              />
-            </TabsContent>
-          </Tabs>
+          <SubscriptionBillingInformationCardPresentation
+            subscription={subscription}
+          />
         </div>
       </div>
     </main>

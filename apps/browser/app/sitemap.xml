@@ -16,19 +16,11 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://substrack.jp/app/cancellation-method</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://substrack.jp/app/setting</loc>
     <priority>0.7</priority>
   </url>
   
   <!-- 情報ページ -->
-  <url>
-    <loc>https://substrack.jp/cancellation-guide</loc>
-    <priority>0.6</priority>
-  </url>
   <url>
     <loc>https://substrack.jp/company</loc>
     <priority>0.5</priority>

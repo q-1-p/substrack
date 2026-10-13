@@ -6,8 +6,6 @@ import { v4 as uuidv4 } from "uuid";
 import { currencyId, timeUnit } from "@/domain/type";
 import { db } from "@/infrastructure/index";
 import {
-  cancellationMethodsTable,
-  cancellationStepsTable,
   currenciesTable,
   subscriptionsTable,
   usersTable,
@@ -16,16 +14,12 @@ import {
 async function seed() {
   try {
     const userId = await seedUser();
-    const insertedMethodIds = await seedCancellationMethods(userId);
 
     // 外部キー制約違反を避けるため、currencies テーブルを先に挿入
     await seedCurrencies();
 
     // その後で他のテーブルを挿入
-    await Promise.all([
-      seedCancellationSteps(insertedMethodIds[0]),
-      seedSubscriptions(userId, insertedMethodIds[0]),
-    ]);
+    await seedSubscriptions(userId);
 
     console.log("シードデータが正常に挿入されました");
   } catch (error) {
@@ -53,66 +47,7 @@ async function seedUser(): Promise<string> {
   // 既存ユーザーのIDを使用
   return existingUsers[0].id;
 }
-async function seedCancellationMethods(userId: string): Promise<string[]> {
-  const insertedMethods = await db
-    .insert(cancellationMethodsTable)
-    .values([
-      {
-        subscriptionName: "Amazon Prime",
-        isPrivate: false,
-        precautions: "",
-        freeText: "",
-        urlToCancel: "",
-        createdUserId: userId,
-      },
-      {
-        subscriptionName: "Netflix",
-        isPrivate: false,
-        precautions: "",
-        freeText: "",
-        urlToCancel: "",
-        createdUserId: userId,
-      },
-      {
-        subscriptionName: "Spotify",
-        isPrivate: true,
-        precautions: "",
-        freeText: "",
-        urlToCancel: "",
-        createdUserId: userId,
-      },
-    ])
-    .returning({
-      id: cancellationMethodsTable.id,
-    });
-
-  return insertedMethods.map((method) => method.id);
-}
-async function seedCancellationSteps(
-  cancellationMethodId: string,
-): Promise<void> {
-  await db.insert(cancellationStepsTable).values([
-    {
-      cancellationMethodId,
-      sequentialOrder: 1,
-      procedure: "Step 1",
-    },
-    {
-      cancellationMethodId,
-      sequentialOrder: 2,
-      procedure: "Step 2",
-    },
-    {
-      cancellationMethodId,
-      sequentialOrder: 3,
-      procedure: "Step 3",
-    },
-  ]);
-}
-async function seedSubscriptions(
-  userId: string,
-  insertedMethodId: string,
-): Promise<void> {
+async function seedSubscriptions(userId: string): Promise<void> {
   const subscriptionsCount = await db
     .select({ count: sql<number>`count(*)` })
     .from(subscriptionsTable)
@@ -130,7 +65,6 @@ async function seedSubscriptions(
         nextUpdate: formatDate(new Date(), "yyyy-MM-dd"),
         updateCycleNumber: 1,
         updateCycleUnit: timeUnit.month,
-        linkedCancellationMethodId: insertedMethodId, // 実際の ID を使用
       },
       {
         id: uuidv4(),
@@ -142,7 +76,6 @@ async function seedSubscriptions(
         nextUpdate: formatDate(addDays(new Date(), 6), "yyyy-MM-dd"),
         updateCycleNumber: 1,
         updateCycleUnit: timeUnit.month,
-        linkedCancellationMethodId: insertedMethodId, // 実際の ID を使用
       },
       {
         id: uuidv4(),
@@ -154,7 +87,6 @@ async function seedSubscriptions(
         nextUpdate: formatDate(addDays(new Date(), 20), "yyyy-MM-dd"),
         updateCycleNumber: 1,
         updateCycleUnit: timeUnit.month,
-        linkedCancellationMethodId: insertedMethodId, // 実際の ID を使用
       },
       {
         id: uuidv4(),
@@ -166,7 +98,6 @@ async function seedSubscriptions(
         nextUpdate: formatDate(addDays(new Date(), -4), "yyyy-MM-dd"),
         updateCycleNumber: 1,
         updateCycleUnit: timeUnit.month,
-        linkedCancellationMethodId: insertedMethodId, // 実際の ID を使用
       },
       {
         id: uuidv4(),
@@ -178,7 +109,6 @@ async function seedSubscriptions(
         nextUpdate: formatDate(addDays(new Date(), 5), "yyyy-MM-dd"),
         updateCycleNumber: 1,
         updateCycleUnit: timeUnit.year,
-        linkedCancellationMethodId: insertedMethodId, // 実際の ID を使用
       },
       {
         id: uuidv4(),
@@ -190,7 +120,6 @@ async function seedSubscriptions(
         nextUpdate: formatDate(addDays(new Date(), 30), "yyyy-MM-dd"),
         updateCycleNumber: 1,
         updateCycleUnit: timeUnit.year,
-        linkedCancellationMethodId: insertedMethodId, // 実際の ID を使用
       },
       {
         id: uuidv4(),
@@ -202,7 +131,6 @@ async function seedSubscriptions(
         nextUpdate: formatDate(addDays(new Date(), 3), "yyyy-MM-dd"),
         updateCycleNumber: 2,
         updateCycleUnit: timeUnit.month,
-        linkedCancellationMethodId: insertedMethodId, // 実際の ID を使用
       },
     ]);
   }

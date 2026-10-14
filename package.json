@@ -22,13 +22,15 @@
     "date-fns": "^4.4.0",
     "drizzle-orm": "^0.45.2",
     "drizzle-seed": "^0.3.1",
-    "nodemailer": "^9.0.3",
+    "nodemailer": "^10.0.6",
     "uuid": "^11.1.1"
   },
   "overrides": {
     "drizzle-orm": "^0.45.2",
     "postcss": "^8.5.25",
-    "sharp": "^0.35.3"
+    "sharp": "^0.35.5",
+    "esbuild": "^0.25.12",
+    "postcss-selector-parser": "^7.1.6"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.6",
